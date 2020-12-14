@@ -2,6 +2,7 @@ on: [push]
 env:
   SERVER: production
   KOPS_STATE_STORE: s3://ubuntu-on-bona-k8s-kops-store
+  ID_RSA_PUB: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC3MBV+kg1a+NVDQ/fwoi7kRDmMjDS0nLcH0ty7wao7V1ywz/v7Ygh2aXA8C1F/nmHmrJjN0JZz5lHc4KqMshfnUIGC9OML4cRwtLw9Sp1YJGlM6FaFeUluPNRGDtOqXxiRDe48bsLW5Q4XVQqa/9ulmWBmLcdUlYv2+Hy4tMoUo8oik1ZaFPoHRRHC0AKDugmzwLSqf6v0kTjq2pmQBhmlyDXayOiRjdGY2QQ1jClAOskjgL6oznBv7E0ETG6/Gxpt9zvXH6QxbeSkEl5sRyvVR3nU27czwFKd3kOfv58SeAFJKfuuw15J7J+HcAKImPzZ2xN1FKp1r8HTxjL64HIJP1PPxhmbm8nWVJyxEtP6yjWrKPA8yP6TBsZ1mgUlhX+7xkUtpdO3kLHl3p+MPgds9Rjw3yFzUhBcVEhhlbsCCdbuEkXRWVRt+Ivyv31qcoDGjSTrYosHv5Z3tyVKsH4T8fU8jUcp9m4x8fOPNAZ2Icc6EJs8W29DKY25Egb9428=
 
 jobs:
   hello_world_job:
@@ -16,7 +17,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
 
-      - name: test multiple commands
+      - name: create cluster
         run: |
           aws iam get-user
           kops get clusters
+          kops create cluster --name ubunut-on-bona.k8s.local --zones eu-central-1a --master-size t2.micro --node-size t2.micro --kubernetes-version 1.15.12
+          kops create secret --name ubunut-on-bona.k8s.local sshpublickey admin -i $ID_RSA_PUB
+
+      - name: delete cluster
+        run: kops delete cluster --name ubunut-on-bona.k8s.local --yes

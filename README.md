@@ -13,5 +13,5 @@ Here I am going to log kOps pipeline
 1. $ `aws s3api put-bucket-versioning --bucket ubuntu-on-bona-k8s-kops-store --region eu-central-1 --versioning-configuration Status=Enabled`
 
 export KOPS_STATE_STORE=s3://ubuntu-on-bona-k8s-kops-store
-kops create cluster --name ubunut-on-bona.k8s.local --zones eu-central-1a --master-size t2.micro --node-size t2.micro --kubernetes-version 1.15.0
+kops create cluster --name ubunut-on-bona.k8s.local --zones eu-central-1a --master-size t2.micro --node-size t2.micro --kubernetes-version 1.15.12
 kops create secret --name ubunut-on-bona.k8s.local sshpublickey admin -i ~/.ssh/id_rsa.pub
