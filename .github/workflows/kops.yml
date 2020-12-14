@@ -1,4 +1,7 @@
 on: [push]
+env:
+  SERVER: production
+  KOPS_STATE_STORE: s3://ubuntu-on-bona-k8s-kops-store
 
 jobs:
   hello_world_job:
@@ -13,5 +16,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
 
-      - name: test AWS Credentials
-        run: aws iam get-user
+      - name: test kops get clusters
+        run: kops get clusters
