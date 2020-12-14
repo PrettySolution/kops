@@ -19,9 +19,7 @@ jobs:
 
       - name: create cluster
         run: |
-          aws iam get-user
           kops create cluster --name ubunut-on-bona.k8s.local --zones eu-central-1a --master-size t2.micro --node-size t2.micro --kubernetes-version 1.15.12
-          kops create secret --name ubunut-on-bona.k8s.local sshpublickey admin -i $ID_RSA_PUB
 
       - name: delete cluster
         run: kops delete cluster --name ubunut-on-bona.k8s.local --yes
